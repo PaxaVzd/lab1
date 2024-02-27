@@ -19,7 +19,7 @@ namespace ArrayOperations
             if (double.TryParse(txtCustomNumber.Text, out double number))
             {
                 customNumbers.Add(number);
-                listBoxInRange.Items.Add(number);
+                listBoxNumbers.Items.Add(number);
                 txtCustomNumber.Clear();
             }
             else
@@ -30,15 +30,10 @@ namespace ArrayOperations
 
         private void DeleteSelected_Click(object sender, RoutedEventArgs e)
         {
-            if (listBoxInRange.SelectedIndex != -1)
+            if (listBoxNumbers.SelectedIndex != -1)
             {
-                customNumbers.RemoveAt(listBoxInRange.SelectedIndex);
-                listBoxInRange.Items.RemoveAt(listBoxInRange.SelectedIndex);
-            }
-            else if (listBoxOutOfRange.SelectedIndex != -1)
-            {
-                customNumbers.RemoveAt(listBoxOutOfRange.SelectedIndex);
-                listBoxOutOfRange.Items.RemoveAt(listBoxOutOfRange.SelectedIndex);
+                customNumbers.RemoveAt(listBoxNumbers.SelectedIndex);
+                listBoxNumbers.Items.RemoveAt(listBoxNumbers.SelectedIndex);
             }
             else
             {
@@ -54,7 +49,7 @@ namespace ArrayOperations
                 for (int i = 2; i < n; i++)
                 {
                     customNumbers[i] = Math.Pow(customNumbers[i - 1], 2) + 2 * customNumbers[i - 2];
-                    listBoxInRange.Items[i] = customNumbers[i];
+                    listBoxNumbers.Items[i] = customNumbers[i];
                 }
             }
             else
@@ -66,8 +61,7 @@ namespace ArrayOperations
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
             customNumbers.Clear();
-            listBoxInRange.Items.Clear();
-            listBoxOutOfRange.Items.Clear();
+            listBoxNumbers.Items.Clear();
         }
 
         private void Run_Click(object sender, RoutedEventArgs e)
@@ -81,16 +75,11 @@ namespace ArrayOperations
             List<double> inRange = new List<double>();
             List<double> outOfRange = new List<double>();
 
-            double sum = 0;
-            int count = 0;
-
             foreach (double num in customNumbers)
             {
                 if (num > b && num <= c)
                 {
                     inRange.Add(num);
-                    sum += num;
-                    count++;
                 }
                 else
                 {
@@ -98,11 +87,13 @@ namespace ArrayOperations
                 }
             }
 
+            double sum = inRange.Sum();
+            int count = inRange.Count;
             double average = count == 0 ? 0 : sum / count;
 
-            string message = $"Average of all elements in the range ({b},{c}] = {average}\n\n";
-
             outOfRange.Sort((a, b) => b.CompareTo(a)); // Сортуємо у порядку спадання
+
+            string message = $"Average of all elements in the range ({b},{c}] = {average}\n\n";
 
             message += "Elements not in range (descending order):\n";
             foreach (double num in outOfRange)
@@ -110,7 +101,6 @@ namespace ArrayOperations
                 message += num + "\n";
             }
 
-            // Виводимо середнє значення та елементи, які не потрапили в проміжок, у модальному вікні
             MessageBox.Show(message, "Results");
         }
     }
