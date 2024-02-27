@@ -83,7 +83,7 @@ namespace ArrayOperations
 
             string message = $"Average of all elements in the range ({b},{c}] = {average:F5}\n\n";
 
-            message += "Elements not in range (descending order):\n";
+            message += "Elements not in range:\n";
             foreach (long num in outOfRange)
             {
                 message += num + "\n";
