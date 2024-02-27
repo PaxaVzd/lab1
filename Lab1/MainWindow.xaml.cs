@@ -93,7 +93,7 @@ namespace ArrayOperations
 
             outOfRange.Sort((a, b) => b.CompareTo(a)); // Сортуємо у порядку спадання
 
-            string message = $"Average of all elements in the range ({b},{c}] = {average}\n\n";
+            string message = $"Average of all elements in the range ({b},{c}] = {average:F5}\n\n";
 
             message += "Elements not in range (descending order):\n";
             foreach (double num in outOfRange)
@@ -103,5 +103,6 @@ namespace ArrayOperations
 
             MessageBox.Show(message, "Results");
         }
+
     }
 }

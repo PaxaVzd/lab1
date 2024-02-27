@@ -8,15 +8,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Ліва частина: поля для додавання чисел -->
         <StackPanel Grid.Column="0" Margin="0,0,10,0">
-            <TextBlock Text="Enter custom numbers:" Margin="0,0,0,5"/>
+            <TextBlock Margin="0,0,0,5"><Run Text="Enter"/><Run Language="uk-ua" Text=" "/><Run Text="numbers:"/></TextBlock>
             <TextBox x:Name="txtCustomNumber" Width="100" Margin="0,0,0,10"/>
             <Button Content="Add number" Click="AddNumber_Click" Margin="0,0,0,10"/>
             <ListBox x:Name="listBoxNumbers" Margin="0,0,0,10"/>
         </StackPanel>
 
-        <!-- Права частина: поля для введення проміжку та кнопок дій -->
         <StackPanel Grid.Column="1" Margin="10,0,0,0">
             <TextBlock Text="Custom range (b):" Margin="0,0,0,5"/>
             <TextBox x:Name="txtB" Width="100" Margin="0,0,0,10"/>
