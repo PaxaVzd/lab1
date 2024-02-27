@@ -7,7 +7,7 @@ namespace ArrayOperations
 {
     public partial class MainWindow : Window
     {
-        private List<double> customNumbers = new List<double>();
+        private List<long> customNumbers = new List<long>();
 
         public MainWindow()
         {
@@ -16,7 +16,7 @@ namespace ArrayOperations
 
         private void AddNumber_Click(object sender, RoutedEventArgs e)
         {
-            if (double.TryParse(txtCustomNumber.Text, out double number))
+            if (long.TryParse(txtCustomNumber.Text, out long number))
             {
                 customNumbers.Add(number);
                 listBoxNumbers.Items.Add(number);
@@ -43,19 +43,7 @@ namespace ArrayOperations
 
         private void Fill_Click(object sender, RoutedEventArgs e)
         {
-            int n = customNumbers.Count;
-            if (n >= 2)
-            {
-                for (int i = 2; i < n; i++)
-                {
-                    customNumbers[i] = Math.Pow(customNumbers[i - 1], 2) + 2 * customNumbers[i - 2];
-                    listBoxNumbers.Items[i] = customNumbers[i];
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please add at least two numbers before using Fill.");
-            }
+            FillArray();
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
@@ -66,16 +54,16 @@ namespace ArrayOperations
 
         private void Run_Click(object sender, RoutedEventArgs e)
         {
-            if (!double.TryParse(txtB.Text, out double b) || !double.TryParse(txtC.Text, out double c))
+            if (!long.TryParse(txtB.Text, out long b) || !long.TryParse(txtC.Text, out long c))
             {
                 MessageBox.Show("Please enter valid numbers for b and c.");
                 return;
             }
 
-            List<double> inRange = new List<double>();
-            List<double> outOfRange = new List<double>();
+            List<long> inRange = new List<long>();
+            List<long> outOfRange = new List<long>();
 
-            foreach (double num in customNumbers)
+            foreach (long num in customNumbers)
             {
                 if (num > b && num <= c)
                 {
@@ -87,16 +75,16 @@ namespace ArrayOperations
                 }
             }
 
-            double sum = inRange.Sum();
+            long sum = inRange.Sum();
             int count = inRange.Count;
-            double average = count == 0 ? 0 : sum / count;
+            double average = count == 0 ? 0 : (double)sum / count;
 
             outOfRange.Sort((a, b) => b.CompareTo(a)); // Сортуємо у порядку спадання
 
             string message = $"Average of all elements in the range ({b},{c}] = {average:F5}\n\n";
 
             message += "Elements not in range (descending order):\n";
-            foreach (double num in outOfRange)
+            foreach (long num in outOfRange)
             {
                 message += num + "\n";
             }
@@ -104,5 +92,26 @@ namespace ArrayOperations
             MessageBox.Show(message, "Results");
         }
 
+        private void FillArray()
+        {
+            customNumbers.Clear(); // Очищаємо масив перед заповненням
+            customNumbers.Add(-4); // Перше число
+            customNumbers.Add(3); // Друге число
+
+            int n = customNumbers.Count;
+            while (n < 20) // Заповнюємо масив до досягнення максимального розміру 
+            {
+                long nextNumber = customNumbers[n - 1] * customNumbers[n - 1] + 2 * customNumbers[n - 2];
+                customNumbers.Add(nextNumber);
+                n++;
+            }
+
+            // Відображення чисел у ListBox
+            listBoxNumbers.Items.Clear();
+            foreach (long num in customNumbers)
+            {
+                listBoxNumbers.Items.Add(num);
+            }
+        }
     }
 }
