@@ -19,7 +19,8 @@ namespace ArrayOperations
             if (double.TryParse(txtCustomNumber.Text, out double number))
             {
                 customNumbers.Add(number);
-                listBox.Items.Add(number);
+                listBoxInRange.Items.Add(number);
+                txtCustomNumber.Clear();
             }
             else
             {
@@ -29,10 +30,15 @@ namespace ArrayOperations
 
         private void DeleteSelected_Click(object sender, RoutedEventArgs e)
         {
-            if (listBox.SelectedIndex != -1)
+            if (listBoxInRange.SelectedIndex != -1)
             {
-                customNumbers.RemoveAt(listBox.SelectedIndex);
-                listBox.Items.RemoveAt(listBox.SelectedIndex);
+                customNumbers.RemoveAt(listBoxInRange.SelectedIndex);
+                listBoxInRange.Items.RemoveAt(listBoxInRange.SelectedIndex);
+            }
+            else if (listBoxOutOfRange.SelectedIndex != -1)
+            {
+                customNumbers.RemoveAt(listBoxOutOfRange.SelectedIndex);
+                listBoxOutOfRange.Items.RemoveAt(listBoxOutOfRange.SelectedIndex);
             }
             else
             {
@@ -42,14 +48,13 @@ namespace ArrayOperations
 
         private void Fill_Click(object sender, RoutedEventArgs e)
         {
-            // Заповнити масив числами за заданою формулою
             int n = customNumbers.Count;
             if (n >= 2)
             {
                 for (int i = 2; i < n; i++)
                 {
                     customNumbers[i] = Math.Pow(customNumbers[i - 1], 2) + 2 * customNumbers[i - 2];
-                    listBox.Items[i] = customNumbers[i];
+                    listBoxInRange.Items[i] = customNumbers[i];
                 }
             }
             else
@@ -61,7 +66,8 @@ namespace ArrayOperations
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
             customNumbers.Clear();
-            listBox.Items.Clear();
+            listBoxInRange.Items.Clear();
+            listBoxOutOfRange.Items.Clear();
         }
 
         private void Run_Click(object sender, RoutedEventArgs e)
@@ -94,16 +100,18 @@ namespace ArrayOperations
 
             double average = count == 0 ? 0 : sum / count;
 
-            // Вивести середнє арифметичне
-            MessageBox.Show($"Середнє арифметичне всіх елементів в проміжку ({b},{c}] = {average}");
+            string message = $"Average of all elements in the range ({b},{c}] = {average}\n\n";
 
-            // Вивести елементи, що не потрапили в проміжок
-            outOfRange.Sort((a, b) => b.CompareTo(a)); // Впорядкувати в порядку спадання
-            listBox.Items.Clear();
+            outOfRange.Sort((a, b) => b.CompareTo(a)); // Сортуємо у порядку спадання
+
+            message += "Elements not in range (descending order):\n";
             foreach (double num in outOfRange)
             {
-                listBox.Items.Add(num);
+                message += num + "\n";
             }
+
+            // Виводимо середнє значення та елементи, які не потрапили в проміжок, у модальному вікні
+            MessageBox.Show(message, "Results");
         }
     }
 }
